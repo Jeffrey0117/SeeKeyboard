@@ -113,8 +113,8 @@ function startFadeOut() {
       lastDisplayedKeys = []
       // 清空後允許滑鼠穿透
       ipcRenderer.send('set-ignore-mouse-events', true)
-    }, 500)
-  }, 2500)
+    }, 400)
+  }, 1000)
 }
 
 // 鍵盤按下事件
@@ -171,17 +171,19 @@ uIOhook.start()
 // 初始狀態允許滑鼠穿透
 ipcRenderer.send('set-ignore-mouse-events', true)
 
-// 視窗拖曳功能（只在按鍵區域可拖曳）
+// 視窗拖曳功能（只有點擊按鍵本身才能拖曳）
 let isDragging = false
 let dragOffset = { x: 0, y: 0 }
 
 keysContainer.addEventListener('mousedown', (e) => {
-  // 只在按鍵區域內才能開始拖曳
-  isDragging = true
-  const bounds = remote.getCurrentWindow().getBounds()
-  dragOffset.x = e.screenX - bounds.x
-  dragOffset.y = e.screenY - bounds.y
-  e.stopPropagation()
+  // 只有點擊 .key 或 .key-separator 才能拖曳
+  if (e.target.classList.contains('key') || e.target.classList.contains('key-separator')) {
+    isDragging = true
+    const bounds = remote.getCurrentWindow().getBounds()
+    dragOffset.x = e.screenX - bounds.x
+    dragOffset.y = e.screenY - bounds.y
+    e.stopPropagation()
+  }
 })
 
 document.addEventListener('mousemove', (e) => {
