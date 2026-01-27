@@ -3,7 +3,9 @@ const { remote } = require('@electron/remote')
 
 const keysContainer = document.getElementById('keys-container')
 let currentKeys = new Set()
+let lastDisplayedKeys = []
 let fadeTimeout = null
+let updateTimeout = null
 
 // 按鍵映射表 - 使用 uiohook-napi 的標準 keycode
 const keyMap = {
@@ -61,11 +63,19 @@ const keyMap = {
   51: ',', 52: '.', 53: '/'
 }
 
-// 顯示按鍵（按著持續顯示，放開後 2.5 秒淡出）
-function displayKeys(keys) {
+// 顯示按鍵
+function displayKeys(keyArray) {
   keysContainer.innerHTML = ''
 
-  const keyArray = Array.from(keys)
+  if (keyArray.length === 0) {
+    // 沒有按鍵時，讓滑鼠穿透
+    document.body.style.pointerEvents = 'none'
+    return
+  }
+
+  // 有按鍵時，允許滑鼠互動
+  document.body.style.pointerEvents = 'auto'
+
   keyArray.forEach((key, index) => {
     // 添加按鍵元素
     const keyElement = document.createElement('div')
@@ -82,23 +92,28 @@ function displayKeys(keys) {
     }
   })
 
-  // 清除之前的淡出計時器
+  // 記錄最後顯示的按鍵組合
+  lastDisplayedKeys = [...keyArray]
+}
+
+// 開始淡出動畫
+function startFadeOut() {
   if (fadeTimeout) {
     clearTimeout(fadeTimeout)
   }
 
-  // 如果沒有按鍵按下，2.5 秒後開始淡出
-  if (keyArray.length === 0) {
-    fadeTimeout = setTimeout(() => {
-      const elements = document.querySelectorAll('.key, .key-separator')
-      elements.forEach(el => el.classList.add('fade-out'))
+  fadeTimeout = setTimeout(() => {
+    const elements = document.querySelectorAll('.key, .key-separator')
+    elements.forEach(el => el.classList.add('fade-out'))
 
-      // 淡出動畫結束後清空
-      setTimeout(() => {
-        keysContainer.innerHTML = ''
-      }, 500)
-    }, 2500)
-  }
+    // 淡出動畫結束後清空
+    setTimeout(() => {
+      keysContainer.innerHTML = ''
+      lastDisplayedKeys = []
+      // 清空後允許滑鼠穿透
+      document.body.style.pointerEvents = 'none'
+    }, 500)
+  }, 2500)
 }
 
 // 鍵盤按下事件
@@ -106,8 +121,20 @@ uIOhook.on('keydown', event => {
   const keyName = keyMap[event.keycode]
 
   if (keyName) {
+    // 取消淡出計時器（如果有新按鍵按下）
+    if (fadeTimeout) {
+      clearTimeout(fadeTimeout)
+      fadeTimeout = null
+    }
+
+    // 取消更新計時器
+    if (updateTimeout) {
+      clearTimeout(updateTimeout)
+      updateTimeout = null
+    }
+
     currentKeys.add(keyName)
-    displayKeys(currentKeys)
+    displayKeys(Array.from(currentKeys))
   }
 })
 
@@ -118,25 +145,30 @@ uIOhook.on('keyup', event => {
   if (keyName) {
     currentKeys.delete(keyName)
 
-    // 如果所有按鍵都放開了，啟動淡出計時器
-    if (currentKeys.size === 0) {
-      // 2.5 秒後淡出
-      fadeTimeout = setTimeout(() => {
-        const elements = document.querySelectorAll('.key, .key-separator')
-        elements.forEach(el => el.classList.add('fade-out'))
-
-        setTimeout(() => {
-          keysContainer.innerHTML = ''
-        }, 500)
-      }, 2500)
-    } else {
-      displayKeys(currentKeys)
+    // 取消之前的更新計時器
+    if (updateTimeout) {
+      clearTimeout(updateTimeout)
     }
+
+    // 延遲 150ms 後才更新顯示（讓組合鍵一起放開時不會閃爍）
+    updateTimeout = setTimeout(() => {
+      // 如果所有按鍵都放開了，啟動淡出計時器
+      if (currentKeys.size === 0) {
+        startFadeOut()
+      }
+      // 如果還有按鍵按著，更新顯示
+      else {
+        displayKeys(Array.from(currentKeys))
+      }
+    }, 150)
   }
 })
 
 // 啟動鍵盤監聽
 uIOhook.start()
+
+// 初始狀態允許滑鼠穿透
+document.body.style.pointerEvents = 'none'
 
 // 視窗拖曳功能
 let isDragging = false
