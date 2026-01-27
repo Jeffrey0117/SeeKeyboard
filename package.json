@@ -1,0 +1,21 @@
+{
+  "name": "seekeyboard",
+  "version": "0.1.0",
+  "description": "鍵盤按鍵顯示工具",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --debug"
+  },
+  "keywords": ["keyboard", "display", "education"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0"
+  },
+  "dependencies": {
+    "uiohook-napi": "^1.5.0",
+    "electron-store": "^8.1.0",
+    "@electron/remote": "^2.1.0"
+  }
+}
