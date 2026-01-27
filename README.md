@@ -2,8 +2,8 @@
 
 🎹 即時顯示鍵盤按鍵的小工具，適合教學錄影與演示快捷鍵
 
-![License](https://img.shields.io/github/license/Jeffrey0117/vibeAHK)
-![Version](https://img.shields.io/github/package-json/v/Jeffrey0117/vibeAHK)
+![License](https://img.shields.io/github/license/Jeffrey0117/SeeKeyboard)
+![Version](https://img.shields.io/github/package-json/v/Jeffrey0117/SeeKeyboard)
 
 ## ✨ 功能特色
 
@@ -44,7 +44,7 @@ npm start
 
 ## 📝 已知問題
 
-查看 [Issues](https://github.com/Jeffrey0117/vibeAHK/issues) 了解當前已知問題
+查看 [Issues](https://github.com/Jeffrey0117/SeeKeyboard/issues) 了解當前已知問題
 
 ## 🛠️ 技術棧
 
