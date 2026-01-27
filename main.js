@@ -8,6 +8,13 @@ remoteMain.initialize()
 const store = new Store()
 let mainWindow
 
+// 監聽滑鼠穿透狀態切換
+ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
+  if (mainWindow) {
+    mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
+  }
+})
+
 function createWindow() {
   const { screen } = require('electron')
   const primaryDisplay = screen.getPrimaryDisplay()
@@ -39,6 +46,9 @@ function createWindow() {
 
   // 啟用 remote 模組
   remoteMain.enable(mainWindow.webContents)
+
+  // 初始設定為滑鼠穿透（沒有按鍵時）
+  mainWindow.setIgnoreMouseEvents(true, { forward: true })
 
   // 不開啟 DevTools
 }

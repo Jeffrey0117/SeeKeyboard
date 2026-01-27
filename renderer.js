@@ -1,5 +1,6 @@
 const { uIOhook, UiohookKey } = require('uiohook-napi')
 const { remote } = require('@electron/remote')
+const { ipcRenderer } = require('electron')
 
 const keysContainer = document.getElementById('keys-container')
 let currentKeys = new Set()
@@ -69,12 +70,12 @@ function displayKeys(keyArray) {
 
   if (keyArray.length === 0) {
     // 沒有按鍵時，讓滑鼠穿透
-    document.body.style.pointerEvents = 'none'
+    ipcRenderer.send('set-ignore-mouse-events', true)
     return
   }
 
   // 有按鍵時，允許滑鼠互動
-  document.body.style.pointerEvents = 'auto'
+  ipcRenderer.send('set-ignore-mouse-events', false)
 
   keyArray.forEach((key, index) => {
     // 添加按鍵元素
@@ -111,7 +112,7 @@ function startFadeOut() {
       keysContainer.innerHTML = ''
       lastDisplayedKeys = []
       // 清空後允許滑鼠穿透
-      document.body.style.pointerEvents = 'none'
+      ipcRenderer.send('set-ignore-mouse-events', true)
     }, 500)
   }, 2500)
 }
@@ -168,20 +169,24 @@ uIOhook.on('keyup', event => {
 uIOhook.start()
 
 // 初始狀態允許滑鼠穿透
-document.body.style.pointerEvents = 'none'
+ipcRenderer.send('set-ignore-mouse-events', true)
 
 // 視窗拖曳功能
 let isDragging = false
 let dragOffset = { x: 0, y: 0 }
 
-document.body.addEventListener('mousedown', (e) => {
+keysContainer.addEventListener('mousedown', (e) => {
+  // 只有在有按鍵顯示時才能拖曳
+  if (keysContainer.children.length === 0) return
+
   isDragging = true
   const bounds = remote.getCurrentWindow().getBounds()
   dragOffset.x = e.screenX - bounds.x
   dragOffset.y = e.screenY - bounds.y
+  e.preventDefault()
 })
 
-document.body.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', (e) => {
   if (isDragging) {
     const window = remote.getCurrentWindow()
     window.setPosition(
@@ -191,7 +196,7 @@ document.body.addEventListener('mousemove', (e) => {
   }
 })
 
-document.body.addEventListener('mouseup', () => {
+document.addEventListener('mouseup', () => {
   isDragging = false
 })
 
