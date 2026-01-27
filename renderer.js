@@ -1,5 +1,5 @@
 const { uIOhook, UiohookKey } = require('uiohook-napi')
-const { remote } = require('@electron/remote')
+const remote = require('@electron/remote')
 const { ipcRenderer } = require('electron')
 
 const keysContainer = document.getElementById('keys-container')
@@ -171,19 +171,17 @@ uIOhook.start()
 // 初始狀態允許滑鼠穿透
 ipcRenderer.send('set-ignore-mouse-events', true)
 
-// 視窗拖曳功能
+// 視窗拖曳功能（只在按鍵區域可拖曳）
 let isDragging = false
 let dragOffset = { x: 0, y: 0 }
 
 keysContainer.addEventListener('mousedown', (e) => {
-  // 只有在有按鍵顯示時才能拖曳
-  if (keysContainer.children.length === 0) return
-
+  // 只在按鍵區域內才能開始拖曳
   isDragging = true
   const bounds = remote.getCurrentWindow().getBounds()
   dragOffset.x = e.screenX - bounds.x
   dragOffset.y = e.screenY - bounds.y
-  e.preventDefault()
+  e.stopPropagation()
 })
 
 document.addEventListener('mousemove', (e) => {

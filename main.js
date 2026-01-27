@@ -11,7 +11,13 @@ let mainWindow
 // 監聽滑鼠穿透狀態切換
 ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
   if (mainWindow) {
-    mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
+    if (ignore) {
+      // 完全穿透
+      mainWindow.setIgnoreMouseEvents(true, { forward: true })
+    } else {
+      // 不穿透，可以互動
+      mainWindow.setIgnoreMouseEvents(false)
+    }
   }
 })
 
@@ -49,8 +55,6 @@ function createWindow() {
 
   // 初始設定為滑鼠穿透（沒有按鍵時）
   mainWindow.setIgnoreMouseEvents(true, { forward: true })
-
-  // 不開啟 DevTools
 }
 
 app.whenReady().then(() => {
