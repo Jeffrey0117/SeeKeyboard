@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SeeKeyboard 設定</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <h1>SeeKeyboard 設定</h1>
+
+    <section class="setting-group">
+      <h2>顯示設定</h2>
+
+      <div class="setting-item">
+        <label for="displayTime">顯示時長（秒）</label>
+        <input type="range" id="displayTime" min="0.5" max="3" step="0.1" value="0.8">
+        <span id="displayTimeValue">0.8</span>
+      </div>
+
+      <div class="setting-item">
+        <label for="fadeSpeed">淡出速度（毫秒）</label>
+        <input type="range" id="fadeSpeed" min="100" max="500" step="50" value="200">
+        <span id="fadeSpeedValue">200</span>
+      </div>
+
+      <div class="setting-item">
+        <label for="keySize">按鍵大小</label>
+        <select id="keySize">
+          <option value="small">小</option>
+          <option value="medium" selected>中</option>
+          <option value="large">大</option>
+        </select>
+      </div>
+
+      <div class="setting-item">
+        <label for="fontSize">字體大小（px）</label>
+        <input type="range" id="fontSize" min="12" max="24" step="2" value="18">
+        <span id="fontSizeValue">18</span>
+      </div>
+    </section>
+
+    <section class="setting-group">
+      <h2>顯示過濾</h2>
+
+      <div class="setting-item checkbox">
+        <input type="checkbox" id="onlyWithModifiers">
+        <label for="onlyWithModifiers">只在有功能鍵時顯示（Ctrl/Alt/Shift/Win）</label>
+      </div>
+
+      <div class="setting-item checkbox">
+        <input type="checkbox" id="showSingleModifiers" checked>
+        <label for="showSingleModifiers">顯示單獨功能鍵</label>
+      </div>
+
+      <div class="setting-item checkbox">
+        <input type="checkbox" id="showLetters" checked>
+        <label for="showLetters">顯示字母/數字鍵</label>
+      </div>
+    </section>
+
+    <section class="setting-group">
+      <h2>其他設定</h2>
+
+      <div class="setting-item checkbox">
+        <input type="checkbox" id="autoStart">
+        <label for="autoStart">開機自動啟動</label>
+      </div>
+
+      <div class="setting-item">
+        <button id="resetPosition">重置視窗位置</button>
+      </div>
+    </section>
+
+    <div class="button-group">
+      <button id="saveBtn" class="primary">儲存</button>
+      <button id="cancelBtn">取消</button>
+    </div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

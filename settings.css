@@ -1,0 +1,144 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.settings-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.setting-group {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.setting-group:last-of-type {
+  border-bottom: none;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.setting-item.checkbox {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.setting-item label {
+  flex: 1;
+  font-size: 14px;
+  color: #666;
+}
+
+.setting-item.checkbox label {
+  flex: initial;
+  cursor: pointer;
+}
+
+.setting-item input[type="range"] {
+  flex: 1;
+  max-width: 200px;
+}
+
+.setting-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.setting-item select {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.setting-item span {
+  min-width: 50px;
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.setting-item button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.setting-item button:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button-group button.primary {
+  background: #007bff;
+  color: white;
+}
+
+.button-group button.primary:hover {
+  background: #0056b3;
+}
+
+.button-group button:not(.primary) {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.button-group button:not(.primary):hover {
+  background: #e5e5e5;
+}

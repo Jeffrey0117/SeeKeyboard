@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
 const remoteMain = require('@electron/remote/main')
@@ -7,6 +7,8 @@ remoteMain.initialize()
 
 const store = new Store()
 let mainWindow
+let settingsWindow
+let tray
 
 // 監聽滑鼠穿透狀態切換
 ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
@@ -20,6 +22,86 @@ ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
     }
   }
 })
+
+// 監聽設定更新
+ipcMain.on('settings-updated', (event, settings) => {
+  // 通知主視窗重新載入設定
+  if (mainWindow) {
+    mainWindow.webContents.send('settings-changed', settings)
+  }
+})
+
+// 建立系統托盤
+function createTray() {
+  // 建立簡單的托盤圖示（使用 nativeImage）
+  const { nativeImage } = require('electron')
+  const icon = nativeImage.createEmpty()
+
+  try {
+    // 嘗試載入 icon.png（如果存在）
+    const iconPath = path.join(__dirname, 'icon.png')
+    tray = new Tray(iconPath)
+  } catch (e) {
+    // 如果沒有圖示檔案，使用空圖示
+    tray = new Tray(icon)
+  }
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '設定',
+      click: () => {
+        createSettingsWindow()
+      }
+    },
+    {
+      label: '重新載入',
+      click: () => {
+        if (mainWindow) {
+          mainWindow.reload()
+        }
+      }
+    },
+    { type: 'separator' },
+    {
+      label: '退出',
+      click: () => {
+        app.quit()
+      }
+    }
+  ])
+
+  tray.setToolTip('SeeKeyboard')
+  tray.setContextMenu(contextMenu)
+
+  // 點擊托盤圖示開啟設定
+  tray.on('click', () => {
+    createSettingsWindow()
+  })
+}
+
+// 建立設定視窗
+function createSettingsWindow() {
+  if (settingsWindow) {
+    settingsWindow.focus()
+    return
+  }
+
+  settingsWindow = new BrowserWindow({
+    width: 650,
+    height: 700,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  })
+
+  settingsWindow.loadFile('settings.html')
+
+  settingsWindow.on('closed', () => {
+    settingsWindow = null
+  })
+}
 
 function createWindow() {
   const { screen } = require('electron')
@@ -59,6 +141,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow()
+  createTray()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
