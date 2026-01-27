@@ -39,7 +39,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 50px;
   text-align: center;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .key-separator {
@@ -54,7 +54,7 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .key.fade-out,

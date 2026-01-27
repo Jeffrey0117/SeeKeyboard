@@ -113,8 +113,8 @@ function startFadeOut() {
       lastDisplayedKeys = []
       // 清空後允許滑鼠穿透
       ipcRenderer.send('set-ignore-mouse-events', true)
-    }, 400)
-  }, 1000)
+    }, 200)
+  }, 800)
 }
 
 // 鍵盤按下事件
