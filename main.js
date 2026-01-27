@@ -33,22 +33,8 @@ ipcMain.on('settings-updated', (event, settings) => {
 
 // 建立系統托盤
 function createTray() {
-  const { nativeImage } = require('electron')
-
-  // 創建一個簡單的圖示（16x16，深色背景，白色 K 字）
-  const canvas = `
-    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-      <rect width="16" height="16" fill="#333333" rx="3"/>
-      <text x="8" y="13" font-family="Arial" font-size="12" font-weight="bold"
-            fill="white" text-anchor="middle">K</text>
-    </svg>
-  `
-
-  const icon = nativeImage.createFromDataURL(
-    'data:image/svg+xml;base64,' + Buffer.from(canvas).toString('base64')
-  )
-
-  tray = new Tray(icon)
+  const iconPath = path.join(__dirname, 'icon.png')
+  tray = new Tray(iconPath)
 
   const contextMenu = Menu.buildFromTemplate([
     {
