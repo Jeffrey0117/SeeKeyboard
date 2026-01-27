@@ -1,16 +1,25 @@
 # SeeKeyboard
 
-鍵盤按鍵顯示工具，用於螢幕錄製教學和快捷鍵演示。
+🎹 即時顯示鍵盤按鍵的小工具，適合教學錄影與演示快捷鍵
 
-## 功能特性
+![License](https://img.shields.io/github/license/Jeffrey0117/vibeAHK)
+![Version](https://img.shields.io/github/package-json/v/Jeffrey0117/vibeAHK)
 
-- 即時顯示當前按下的按鍵
-- 白底鍵盤樣式顯示
-- 透明浮動視窗
-- 可拖曳移動，自動記住位置
-- 1.5 秒後自動淡出
+## ✨ 功能特色
 
-## 使用方式
+- **即時顯示** - 按下按鍵立即顯示，支援組合鍵（Ctrl + Shift + A）
+- **可自訂** - 調整顯示時長、字體大小、按鍵樣式
+- **顯示過濾** - 可設定只在使用功能鍵時顯示
+- **拖曳移動** - 點擊按鍵區域可拖曳調整位置，自動記住
+- **系統托盤** - 右鍵托盤圖示快速開啟設定
+
+## 🚀 快速開始
+
+### 安裝依賴
+
+```bash
+npm install
+```
 
 ### 啟動應用
 
@@ -18,35 +27,31 @@
 npm start
 ```
 
-### 開發模式（帶 DevTools）
+### 開啟設定
 
-```bash
-npm run dev
-```
+在系統托盤找到藍色圖示，點擊或右鍵選擇「設定」
 
-## 專案結構
+## ⚙️ 設定選項
 
-```
-vibeAHK/
-├── main.js           # Electron 主程序
-├── index.html        # UI 介面
-├── renderer.js       # 渲染程序邏輯
-├── styles.css        # 樣式
-├── package.json      # 專案配置
-└── SPEC.md          # 規格文檔
-```
+- **顯示時長** - 調整按鍵顯示多久後淡出（0.5-3 秒）
+- **淡出速度** - 調整淡出動畫速度
+- **按鍵大小** - 小/中/大
+- **字體大小** - 12-24px
+- **顯示過濾**
+  - 只在有功能鍵時顯示（Ctrl/Alt/Shift/Win）
+  - 顯示單獨功能鍵
+  - 顯示字母/數字鍵
 
-## 技術棧
+## 📝 已知問題
 
-- **Electron** - 桌面應用框架
-- **uiohook-napi** - 全域鍵盤監聽
-- **electron-store** - 本地儲存
-- **@electron/remote** - 跨程序通訊
+查看 [Issues](https://github.com/Jeffrey0117/vibeAHK/issues) 了解當前已知問題
 
-## 操作說明
+## 🛠️ 技術棧
 
-1. 啟動後會顯示一個小型透明視窗
-2. 按下任何按鍵會立即顯示
-3. 組合鍵會橫向排列顯示（如 Ctrl + Shift + A）
-4. 1.5 秒後自動淡出
-5. 可以拖曳視窗到任意位置，下次啟動會記住位置
+- Electron
+- uiohook-napi
+- electron-store
+
+## 📄 授權
+
+MIT License
