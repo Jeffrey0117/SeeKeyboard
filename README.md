@@ -1,7 +1,7 @@
 # SeeKeyboard
 
 <div align="center">
-  <img src="logo.png" alt="SeeKeyboard Logo" width="500">
+  <img src="logo.png" alt="SeeKeyboard Logo" width="300">
 </div>
 
 🎹 即時顯示鍵盤按鍵的小工具，適合教學錄影與演示快捷鍵
