@@ -1,5 +1,7 @@
 # SeeKeyboard
 
+![SeeKeyboard Logo](logo.png)
+
 🎹 即時顯示鍵盤按鍵的小工具，適合教學錄影與演示快捷鍵
 
 ![License](https://img.shields.io/github/license/Jeffrey0117/SeeKeyboard)
